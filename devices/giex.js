@@ -129,4 +129,30 @@ module.exports = [
                 .withDescription('Water consumed (Litres)'),
         ],
     },
+        {
+        fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE200_a7sghmms'}],
+        model: 'QT06',
+        vendor: 'GiEX',
+        description: 'Water irrigation valve',
+        onEvent: tuya.onEventSetLocalTime,
+        fromZigbee: [fzLocal.giex_water_valve],
+        toZigbee: [tzLocal.giex_water_valve],
+        exposes: [
+            e.battery(),
+            exposes.binary('state', ea.STATE_SET, 'ON', 'OFF').withDescription('State'),
+            exposes.enum('mode', ea.STATE_SET, ['duration', 'capacity']).withDescription('Irrigation mode'),
+            exposes.numeric('irrigation_target', exposes.access.STATE_SET).withValueMin(0).withValueMax(1440).withUnit('mintues or Litres')
+                .withDescription('Irrigation Target, duration in minutes or capacity in Liters (depending on mode)'),
+            exposes.numeric('cycle_irrigation_num_times', exposes.access.STATE_SET).withValueMin(0).withValueMax(100).withUnit('#')
+                .withDescription('Number of cycle irrigation times, set to 0 for single cycle'),
+            exposes.numeric('cycle_irrigation_interval', exposes.access.STATE_SET).withValueMin(0).withValueMax(1440).withUnit('min')
+                .withDescription('Cycle irrigation interval'),
+            exposes.numeric('irrigation_start_time', ea.STATE).withUnit('GMT+8').withDescription('Irrigation start time'),
+            exposes.numeric('irrigation_end_time', ea.STATE).withUnit('GMT+8').withDescription('Irrigation end time'),
+            exposes.numeric('last_irrigation_duration', exposes.access.STATE).withUnit('min')
+                .withDescription('Last irrigation duration'),
+            exposes.numeric('water_consumed', exposes.access.STATE).withUnit('L')
+                .withDescription('Water consumed (Litres)'),
+        ],
+    }
 ];
